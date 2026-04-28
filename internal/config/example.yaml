@@ -1,0 +1,27 @@
+# vaultdiff configuration file
+# Copy this file to vaultdiff.yaml and adjust for your environment.
+
+# environments: list of Vault instances to compare (minimum 2).
+environments:
+  - name: staging
+    address: https://vault-staging.example.com
+    # token can be set here or via VAULTDIFF_TOKEN_STAGING environment variable.
+    token: ""
+    # namespace is optional (Vault Enterprise only).
+    namespace: ""
+
+  - name: production
+    address: https://vault-prod.example.com
+    # token can be set here or via VAULTDIFF_TOKEN_PRODUCTION environment variable.
+    token: ""
+    namespace: ""
+
+# paths: KV secret paths to compare across all environments.
+paths:
+  - secret/data/app/config
+  - secret/data/app/database
+  - secret/data/shared/tls
+
+# mask_values: when true, secret values are replaced with "***" in the diff
+# output. Key names and change types (added/removed/changed) are still shown.
+mask_values: true
