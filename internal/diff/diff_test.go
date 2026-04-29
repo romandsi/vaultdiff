@@ -65,6 +65,26 @@ func TestCompare_Path(t *testing.T) {
 	}
 }
 
+func TestCompare_MultipleChanges(t *testing.T) {
+	left := diff.SecretMap{"key1": "before", "key2": "old", "key3": "keep"}
+	right := diff.SecretMap{"key1": "after", "key3": "keep", "key4": "new"}
+
+	result := diff.Compare("secret/myapp", left, right)
+
+	if len(result.Changed) != 1 {
+		t.Errorf("expected 1 changed key, got %d", len(result.Changed))
+	}
+	if len(result.Removed) != 1 {
+		t.Errorf("expected 1 removed key, got %d", len(result.Removed))
+	}
+	if len(result.Added) != 1 {
+		t.Errorf("expected 1 added key, got %d", len(result.Added))
+	}
+	if !result.HasDiff() {
+		t.Error("expected HasDiff to return true")
+	}
+}
+
 func TestSortedKeys(t *testing.T) {
 	m := map[string]string{"z": "1", "a": "2", "m": "3"}
 	keys := diff.SortedKeys(m)
